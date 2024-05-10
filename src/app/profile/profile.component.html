@@ -1,0 +1,562 @@
+<div class="headertop">
+  <div class="headertopname">My Account</div>
+</div>
+
+<!--=============== MAIN ===============-->
+<main class="main">
+  <!--=============== BREADCRUMB ===============-->
+  <section class="breadcrumb">
+    <ul class="breadcrumb__list flex container">
+      <li><a (click)="home()" class="breadcrumb__link">Home</a></li>
+      <li><span class="breadcrumb__link">></span></li>
+      <li><span class="breadcrumb__link">Account</span></li>
+    </ul>
+  </section>
+
+  <!--=============== ACCOUNTS ===============-->
+
+  <section class="accounts section--lg">
+    <div class="accounts__container container grid">
+      <div class="account__tabs">
+        <p
+          class="account__tab {{ display === 'dashboard' ? 'active-tab' : '' }}"
+          (click)="changeDisplay('dashboard')"
+          data-target="#dashboard"
+        >
+          <i class="fi fi-rs-settings-sliders"></i> Dashboard
+        </p>
+        <p
+          (click)="changeDisplay('order')"
+          class="account__tab {{ display === 'order' ? 'active-tab' : '' }}"
+          data-target="#orders"
+        >
+          <i class="fi fi-rs-shopping-bag"></i> Orders
+        </p>
+        <p
+          (click)="changeDisplay('track')"
+          class="account__tab {{ display === 'track' ? 'active-tab' : '' }}"
+          data-target="#orders"
+        >
+          <i class="fi fi-rs-map"></i> Order Tracking
+        </p>
+        <p
+          *ngIf="isAuth"
+          (click)="changeDisplay('address')"
+          class="account__tab {{ display === 'address' ? 'active-tab' : '' }}"
+          data-target="#address"
+        >
+          <i class="fi fi-rs-marker"></i> My Profile
+        </p>
+        <!-- <p
+          (click)="changeDisplay('cart')"
+          class="account__tab {{ display === 'cart' ? 'active-tab' : '' }}"
+          data-target="#cart"
+        >
+          <i class="fi fi-rs-cart-shopping-fast"></i>
+          My Shopping Cart
+        </p> -->
+        <p
+          (click)="changeDisplay('wish')"
+          class="account__tab {{ display === 'wish' ? 'active-tab' : '' }}"
+          data-target="#wish"
+        >
+          <i class="fi fi-rs-heart"></i> My Wishlist
+        </p>
+        <!-- <p class="account__tab" data-target="#change-password">
+            <i class="fi fi-rs-settings-sliders"></i> Change Password
+          </p> -->
+        <p *ngIf="!isAuth" [routerLink]="['/login']" class="account__tab">
+          <i class="fi fi-rs-inbox"></i> Login
+        </p>
+        <p *ngIf="isAuth" (click)="logout()" class="account__tab">
+          <i class="fi fi-rs-exit"></i> Logout
+        </p>
+      </div>
+      <div class="tabs__content">
+        <div
+          class="tab__content {{ display === 'dashboard' ? 'active-tab' : '' }}"
+          content
+          id="dashboard"
+        >
+          <h3 class="tab__header">
+            Hello {{ isAuth ? user.username : "Guest" }}
+          </h3>
+          <div class="tab__body">
+            <p class="tab__description">
+              From your account dashboard. you can easily check & view your
+              recent order, manage your shipping and billing addresses and edit
+              your password and account details
+            </p>
+          </div>
+        </div>
+        <div
+          class="tab__content {{ display === 'order' ? 'active-tab' : '' }}"
+          content
+          id="orders"
+        >
+          <h3 class="tab__header">Your Orders</h3>
+          <div class="tab__body">
+            <table class="placed__order-table" *ngIf="orders.length > 0">
+              <thead>
+                <tr>
+                  <th>Orders</th>
+                  <th>Date</th>
+                  <th>Payment Status</th>
+                  <!-- <th>Delivery Status</th> -->
+                  <th>Totals</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let order of orders">
+                  <ng-container *ngIf="order.product">
+                    <td>{{ order.product.title }}</td>
+                    <td>{{ order.chreatedAt | date }}</td>
+                    <td>{{ order.status ? "Paid" : "Pending" }}</td>
+                    <!-- <td *ngIf="order.status">{{ order.deliveryStatus }}</td>
+                    <td *ngIf="!order.status">
+                      <button class="view__order" (click)="nav(order._id)">
+                        Checkout
+                      </button>
+                    </td>  -->
+                    <td>
+                      <i class="bi bi-currency-rupee"></i
+                      >{{ order.totalAmount }}
+                    </td>
+                  </ng-container>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div
+          class="tab__content {{ display === 'track' ? 'active-tab' : '' }}"
+          content
+          id="orders"
+        >
+          <h3 class="tab__header">Track Your Orders</h3>
+          <div class="tab__body">
+            <table class="placed__order-table" *ngIf="orders.length > 0">
+              <thead>
+                <tr>
+                  <th>Orders</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let order of orders">
+                  <tr *ngIf="order.status">
+                    <ng-container *ngIf="order.product">
+                      <td>{{ order.product.title }}</td>
+                      <td>{{ order.deliveryStatus }}</td>
+                      <td>
+                        <a
+                          *ngIf="
+                            order.tracking_id &&
+                            order.deliveryStatus !== 'Delivered'
+                          "
+                          href="https://jabezraja31119979a.trackingmore.org/{{
+                            order.tracking_id
+                          }}?page=tracking-page&mode=iframe"
+                          rou
+                          class="view__order"
+                          >Track</a
+                        >
+                        <p
+                          *ngIf="
+                            !order.tracking_id &&
+                            order.deliveryStatus === 'Processing'
+                          "
+                        >
+                          Under Processing
+                        </p>
+                        <p
+                          *ngIf="order.deliveryStatus === 'Delivered'"
+                          class="text-success"
+                        >
+                          {{ order.deliveryStatus }} Successfully
+                        </p>
+                      </td>
+                    </ng-container>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div
+          *ngIf="isAuth"
+          class="tab__content {{ display === 'address' ? 'active-tab' : '' }}"
+          content
+          id="address"
+        >
+          <h3 class="tab__header">Shipping Address</h3>
+          <div class="tab__body">
+            <table class="placed__order-table">
+              <thead>
+                <!-- <tr>
+                  <th>Address Details</th>
+                </tr> -->
+              </thead>
+              <tbody>
+                <tr *ngIf="!user?.billingDetails || edit">
+                  <td>Profile Pic</td>
+                  <td>
+                    <input
+                      type="file"
+                      class="form-control"
+                      (change)="addPic($event)"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Name</td>
+                  <td *ngIf="user?.billingDetails?.address && !edit">
+                    {{ user.billingDetails.name }}
+                  </td>
+                  <td *ngIf="!user?.billingDetails || edit">
+                    <input
+                      type="text"
+                      class="form-control {{
+                        err && !billingDetails.name ? 'is-invalid' : ''
+                      }}"
+                      (input)="err = false"
+                      [(ngModel)]="billingDetails.name"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Phone</td>
+                  <td *ngIf="user?.billingDetails?.address && !edit">
+                    {{ user.billingDetails.phone }}
+                  </td>
+                  <td *ngIf="!user?.billingDetails || edit">
+                    <input
+                      type="text"
+                      class="form-control {{
+                        err && billingDetails.phone.length < 10
+                          ? 'is-invalid'
+                          : ''
+                      }} {{ phnerr ? 'is-invalid ' : '' }}"
+                      (input)="err = false; phnerr = false"
+                      [(ngModel)]="billingDetails.phone"
+                      (keypress)="validateNumber($event)"
+                      minlength="10"
+                      maxlength="10"
+                    />
+                    <p *ngIf="phnerr" class="text-danger">{{ phnerr }}</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Email</td>
+                  <td *ngIf="user?.billingDetails?.address && !edit">
+                    {{ user.billingDetails.email }}
+                  </td>
+                  <td *ngIf="!user?.billingDetails || edit">
+                    <input
+                      type="text"
+                      class="form-control {{ emailerr ? 'is-invalid ' : '' }} {{
+                        err && !this.isValidEmail(this.billingDetails.email)
+                          ? 'is-invalid'
+                          : ''
+                      }}"
+                      (input)="err = false; emailerr = false"
+                      [(ngModel)]="billingDetails.email"
+                    />
+                    <p *ngIf="emailerr" class="text-danger">{{ emailerr }}</p>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>Address</td>
+                  <td *ngIf="user?.billingDetails?.address && !edit">
+                    {{ user.billingDetails.address }}
+                  </td>
+                  <td *ngIf="!user?.billingDetails || edit">
+                    <input
+                      type="text"
+                      class="form-control {{
+                        err && !billingDetails.address ? 'is-invalid' : ''
+                      }}"
+                      (input)="err = false"
+                      [(ngModel)]="billingDetails.address"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>City</td>
+                  <td *ngIf="user?.billingDetails?.address && !edit">
+                    {{ user.billingDetails.city }}
+                  </td>
+                  <td *ngIf="!user?.billingDetails || edit">
+                    <input
+                      type="text"
+                      class="form-control {{
+                        err && !billingDetails.city ? 'is-invalid' : ''
+                      }}"
+                      (input)="err = false"
+                      [(ngModel)]="billingDetails.city"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>State</td>
+                  <td *ngIf="user?.billingDetails?.address && !edit">
+                    {{ user.billingDetails.state }}
+                  </td>
+                  <td *ngIf="!user?.billingDetails || edit">
+                    <select
+                      class="form-control {{
+                        err && !billingDetails.state ? 'is-invalid' : ''
+                      }}"
+                      (input)="err = false"
+                      [(ngModel)]="billingDetails.state"
+                    >
+                      <option value="">Select State</option>
+                      <option value="Andhra Pradesh">Andhra Pradesh</option>
+                      <option value="Arunachal Pradesh">
+                        Arunachal Pradesh
+                      </option>
+                      <option value="Assam">Assam</option>
+                      <option value="Bihar">Bihar</option>
+                      <option value="Chhattisgarh">Chhattisgarh</option>
+                      <option value="Goa">Goa</option>
+                      <option value="Gujarat">Gujarat</option>
+                      <option value="Haryana">Haryana</option>
+                      <option value="Himachal Pradesh">Himachal Pradesh</option>
+                      <option value="Jammu and Kashmir">
+                        Jammu and Kashmir
+                      </option>
+                      <option value="Jharkhand">Jharkhand</option>
+                      <option value="Karnataka">Karnataka</option>
+                      <option value="Kerala">Kerala</option>
+                      <option value="Madhya Pradesh">Madhya Pradesh</option>
+                      <option value="Maharashtra">Maharashtra</option>
+                      <option value="Manipur">Manipur</option>
+                      <option value="Meghalaya">Meghalaya</option>
+                      <option value="Mizoram">Mizoram</option>
+                      <option value="Nagaland">Nagaland</option>
+                      <option value="Odisha">Odisha</option>
+                      <option value="Punjab">Punjab</option>
+                      <option value="Rajasthan">Rajasthan</option>
+                      <option value="Sikkim">Sikkim</option>
+                      <option value="Tamil Nadu">Tamil Nadu</option>
+                      <option value="Telangana">Telangana</option>
+                      <option value="Tripura">Tripura</option>
+                      <option value="Uttarakhand">Uttarakhand</option>
+                      <option value="Uttar Pradesh">Uttar Pradesh</option>
+                      <option value="West Bengal">West Bengal</option>
+                      <option value="Andaman and Nicobar Islands">
+                        Andaman and Nicobar Islands
+                      </option>
+                      <option value="Chandigarh">Chandigarh</option>
+                      <option value="Dadra and Nagar Haveli and Daman and Diu">
+                        Dadra and Nagar Haveli and Daman and Diu
+                      </option>
+                      <option value="Delhi">Delhi</option>
+                      <option value="Lakshadweep">Lakshadweep</option>
+                      <option value="Puducherry">Puducherry</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Country</td>
+                  <td *ngIf="user?.billingDetails?.address && !edit">
+                    {{ user.billingDetails.country }}
+                  </td>
+                  <td *ngIf="!user?.billingDetails || edit">
+                    <input
+                      type="text"
+                      class="form-control"
+                      disabled="true"
+                      (input)="err = false"
+                      [(ngModel)]="billingDetails.country"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Pincode</td>
+                  <td *ngIf="user?.billingDetails?.address && !edit">
+                    {{ user.billingDetails.postcode }}
+                  </td>
+                  <td *ngIf="!user?.billingDetails || edit">
+                    <input
+                      type="text"
+                      class="form-control {{
+                        err && billingDetails.postcode.length < 6
+                          ? 'is-invalid'
+                          : ''
+                      }} {{ posterr ? 'is-invalid ' : '' }}"
+                      (input)="err = false; posterr = false"
+                      [(ngModel)]="billingDetails.postcode"
+                    />
+                    <p *ngIf="posterr" class="text-danger">{{ posterr }}</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <a
+              class="btns"
+              *ngIf="!edit"
+              (click)="edit = true; billingDetails = user.billingDetails"
+              >Edit</a
+            >
+            <a class="btns" *ngIf="edit" (click)="addAddress()">Save</a>
+          </div>
+        </div>
+        <!-- <div
+          class="tab__content {{ display === 'cart' ? 'active-tab' : '' }}"
+          content
+          id="orders"
+        >
+          <h3 class="tab__header">Your Cart</h3>
+          <div class="tab__body">
+            <table class="placed__order-table" *ngIf="cartList.length > 0">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Subtotal</th>
+                  <th>Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let w of cartList">
+                  <ng-container *ngIf="w.productId">
+                    <td>
+                      <h3 class="table__title">
+                        {{ w.productId.title }}
+                        <div *ngIf="w.userWant.gifts.length > 0">
+                          <p style="color: rgb(255, 145, 0)">+</p>
+
+                          <div *ngFor="let gif of w.userWant.gifts">
+                            {{ gif.gift.name }} x {{ gif.quantity }}
+                          </div>
+                        </div>
+                      </h3>
+                    </td>
+                    <td>
+                      <i class="bi bi-currency-rupee"></i>
+                      {{ w.productId.amount }}
+                      <span
+                        *ngIf="w.userWant.gifts.length > 0"
+                        class="table__price"
+                      >
+                        <p style="color: rgb(255, 145, 0)">+</p>
+                        <i class="bi bi-currency-rupee"></i
+                        >{{ giftTotal(w.userWant.gifts) }}</span
+                      >
+           
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        [(ngModel)]="w.userWant.quantity"
+                        class="quantity"
+                        min="1"
+                        (input)="
+                          updateQt(w._id, w.userWant.quantity, w.userWant._id)
+                        "
+                      />
+                    </td>
+                    <td>
+                      <span class="subtotal"
+                        ><i class="bi bi-currency-rupee"></i
+                        >{{ w.userWant.totalAmount }}</span
+                      >
+                    </td>
+                    <td>
+                      <i
+                        (click)="remove(w._id)"
+                        class="fi fi-rs-trash table__trash"
+                      ></i>
+                    </td>
+                  </ng-container>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div> -->
+
+        <div
+          class="tab__content {{ display === 'wish' ? 'active-tab' : '' }}"
+          content
+          id="orders"
+        >
+          <h3 class="tab__header">Your Wish</h3>
+          <div class="tab__body">
+            <table class="placed__order-table" *ngIf="wishList.length > 0">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Price</th>
+                  <th>Stock Status</th>
+                  <th>Action</th>
+                  <th>Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let wish of wishList">
+                  <ng-container *ngIf="wish">
+                    <td>
+                      <h3 class="table__title">
+                        {{ wish.title }}
+                      </h3>
+                    </td>
+                    <td>
+                      <span class="table__price"
+                        ><i class="bi bi-currency-rupee"></i
+                        >{{ wish.amount }}</span
+                      >
+                    </td>
+                    <td><span class="table__stock">In Stock</span></td>
+                    <td>
+                      <a
+                        [routerLink]="['/product', wish._id]"
+                        class="active-link"
+                        >Add to Cart</a
+                      >
+                    </td>
+                    <td>
+                      <i
+                        (click)="removeWish(wish._id)"
+                        class="fi fi-rs-trash table__trash"
+                      ></i>
+                    </td>
+                  </ng-container>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="tab__content" content id="change-password">
+          <h3 class="tab__header">Change Password</h3>
+          <div class="tab__body">
+            <form class="form grid">
+              <input
+                type="password"
+                placeholder="Current Password"
+                class="form__input"
+              />
+              <input
+                type="password"
+                placeholder="New Password"
+                class="form__input"
+              />
+              <input
+                type="password"
+                placeholder="Confirm Password"
+                class="form__input"
+              />
+              <div class="form__btn">
+                <button class="btn btn--md">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

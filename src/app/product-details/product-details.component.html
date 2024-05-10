@@ -1,0 +1,745 @@
+<div *ngIf="spinner" class="spin">
+  <app-spinner></app-spinner>
+</div>
+
+<main class="main">
+  <!--=============== DETAILS ===============-->
+  <section class="details section--lg">
+    <div class="details__container container grid">
+      <div *ngIf="!img" class="details__group">
+        <img [src]="data.image" alt="" class="details__img" />
+      </div>
+      <div class="floating-box mt-0" *ngIf="data.frame && img">
+        <div>
+          <app-frames
+            [frameSrc]="data.frame"
+            (image)="addFile($event)"
+            (file)="addCaputue($event)"
+            [edit]="edit"
+            [save]="save"
+            [reset]="reset"
+          ></app-frames>
+        </div>
+      </div>
+      <!-- <div class="detailscroll"> -->
+      <div class="details__group">
+        <h3 class="details__title">{{ data.title }}</h3>
+        <!-- <p class="details__brand">Brand: <span>adidas</span></p> -->
+        <div class="details__price flex">
+          <span class="new__price"
+            ><i class="bi bi-currency-rupee"></i>{{ data.amount }}</span
+          >
+          <span class="old__price"
+            ><i class="bi bi-currency-rupee"></i>{{ data.price }}</span
+          >
+          <span class="save__price">{{ data.discount }}% Off</span>
+        </div>
+        <a class="form-label" style="color: rgb(57, 57, 57)"> Category: </a>
+        <a class="short__description" style="color: rgb(106, 106, 106)">
+          {{ data.category.categoryName }}
+        </a>
+        <br />
+        <br />
+        <a class="form-label" style="color: rgb(57, 57, 57)"> Description: </a>
+        <a class="short__description" style="color: rgb(106, 106, 106)">
+          {{ data.description }}
+        </a>
+        <div *ngIf="data.userImage && !data.frame" class="details__meta">
+          <div class="meta__list">
+            <label class="form-label" for="customFile">Upload Image:</label>
+            <input
+              type="file"
+              class="form-control"
+              id="customFile"
+              (change)="addFile($event)"
+            />
+          </div>
+        </div>
+
+        <button
+          *ngIf="data.frame && !img"
+          class="btns w-100 my-3"
+          (click)="img = true"
+        >
+          Upload Image
+        </button>
+    
+
+        <div id="btnshide" class="prodBut">
+          <div class="details__action">
+            <button
+            *ngIf="data.frame && img && !edit" 
+            class="btns btn--sm"
+            (click)="edit = true"
+          >
+            Edit
+          </button>
+            <!-- <input type="number" class="quantity" value="3" /> -->
+            <button *ngIf="data.frame && img && edit"
+           
+            (click)="save = true; edit = false" class="btns btn--sm">
+            Save
+            </button>
+            <!-- <a href="#" class="details__action-btn">
+              <i class="fi fi-rs-heart"></i>
+            </a> -->
+          </div>
+          <div class="details__action">
+            <!-- <input type="number" class="quantity" value="3" /> -->
+            <button *ngIf="img" (click)="reset = true" class="btns1 btn--sm">Reset Image</button>
+          </div>
+        </div>
+
+
+        <!-- <button
+          *ngIf="data.frame && img && edit"
+          class="btns w-100 my-3"
+          (click)="save = true; edit = false"
+        >
+          Save
+        </button>
+        <button *ngIf="img" class="btns w-100 my-3" (click)="reset = true">
+          Reset
+        </button> -->
+
+        <div style="display: flex; justify-content: space-between" class="me-5">
+          <div class="details__meta">
+            <div class="meta__list">
+              <p class="form-label">Select Print Type:</p>
+              <select class="form-select" [(ngModel)]="frameDeatails.printType">
+                <option
+                  *ngFor="let print of data.availablePrintType"
+                  [value]="print.categoryName"
+                  class=""
+                >
+                  {{ print.categoryName }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <!-- <span class="details__size-title">Size</span> -->
+          <div class="details__meta">
+            <div class="meta__list">
+              <p class="form-label">Size:</p>
+              <select class="form-select" [(ngModel)]="frameDeatails.size">
+                <option
+                  *ngFor="let print of data.availablePrintSize"
+                  [value]="+print.width + ' x ' + +print.height + ' inche'"
+                  class=""
+                >
+                  {{ print.width }} x {{ print.height }} inches
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="details__meta">
+            <div class="meta__list">
+              <p class="form-label">Quantity:</p>
+              <input
+                type="number"
+                class="form-select-sm"
+                min="1"
+                [(ngModel)]="frameDeatails.quantity"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="prodBut">
+          <div class="details__action">
+            <!-- <input type="number" class="quantity" value="3" /> -->
+            <button (click)="active('cart')" class="btns btn--sm">
+              Add To Cart
+            </button>
+            <!-- <a href="#" class="details__action-btn">
+              <i class="fi fi-rs-heart"></i>
+            </a> -->
+          </div>
+          <div class="details__action">
+            <!-- <input type="number" class="quantity" value="3" /> -->
+            <a (click)="active('buy')" class="btns1 btn--sm">Buy Now</a>
+          </div>
+        </div>
+        <section id="faq" class="new__arrivals">
+          <h3 class="section__title" data-aos="fade-right">
+            <span>Get</span> Offers:
+          </h3>
+          <div data-aos="fade-up">
+            <!-- <div class="details__meta">
+              <div class="meta__list">
+                <p class="form-label">Get Offers:</p>
+              </div>
+            </div> -->
+            <div
+              class="row justify-content-center"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
+              <div class="col-lg-10">
+                <div class="accordion accordion-flush" id="faqlist">
+                  <div class="accordion-item">
+                    <h3 class="accordion-header">
+                      <button
+                        class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#faq-content-1"
+                      >
+                        Get Flat 10% off, for first time users
+                      </button>
+                    </h3>
+                    <div
+                      id="faq-content-1"
+                      class="accordion-collapse collapse"
+                      data-bs-parent="#faqlist"
+                    >
+                      <div class="accordion-body">
+                        Terms & Conditions Code is valid for the first time
+                        buyers only Code can be used one time per user only A
+                        minimum order value of ₹699 is required to be eligible
+                        for this offer Max discount of ₹100 can be availed
+                        Discount is not applicable on shipping fees Offer is not
+                        applicable on gold & silver items, electronics and gift
+                        cards Offer is for a limited time period only & can be
+                        modified or discontinued without prior intimation Offer
+                        cannot be clubbed with any other ongoing offers or codes
+                      </div>
+                    </div>
+                  </div>
+                  <!-- # Faq item-->
+
+                  <div class="accordion-item">
+                    <h3 class="accordion-header">
+                      <button
+                        class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#faq-content-2"
+                      >
+                        Get Flat 15% Cashback, Use Code LOYAL
+                      </button>
+                    </h3>
+                    <div
+                      id="faq-content-2"
+                      class="accordion-collapse collapse"
+                      data-bs-parent="#faqlist"
+                    >
+                      <div class="accordion-body">
+                        Terms & Conditions A minimum order value of ₹599 is
+                        required to be eligible for this offer Max discount of
+                        ₹200 can be availed Cashback is valid upto 90 days
+                        Discount is not applicable on shipping fees Offer is not
+                        applicable on gold & silver items, electronics and gift
+                        cards Offer is for a limited time period only & can be
+                        modified or discontinued without prior intimation Offer
+                        cannot be clubbed with any other ongoing offers or codes
+                      </div>
+                    </div>
+                  </div>
+                  <!-- # Faq item-->
+
+                  <div class="accordion-item">
+                    <h3 class="accordion-header">
+                      <button
+                        class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#faq-content-3"
+                      >
+                        Flat 5% cashback upto INR 750 (New user to Simpl)
+                      </button>
+                    </h3>
+                    <div
+                      id="faq-content-3"
+                      class="accordion-collapse collapse"
+                      data-bs-parent="#faqlist"
+                    >
+                      <div class="accordion-body">
+                        Terms & Conditions Get 5% cashback up to INR 750 on your
+                        first transaction on Simpl A minimum order value of INR
+                        749 is required to be eligible for this offer Offer
+                        valid once per user on Simpl, during the offer period
+                        Offer is valid only for New Users to Simpl Offer valid
+                        from 1st March to 31st March 2024 No coupon code is
+                        required Eligible cashback amount and details will
+                        reflect in the user's Simpl account, within 5 minutes of
+                        a successful transaction The eligible amount will be
+                        credited to a user’s Simpl account post settlement of
+                        the current dues Cashback will be cancelled in case of
+                        full refunds or cancellation of orders To check your
+                        transaction history and cashback amount, download the
+                        Simpl App available on Google Play Store & the App store
+                        Happy to assist you with further concerns. Please write
+                        to help&#64;getsimpl.com. Or chat with the Simpl team on
+                        the Simpl app
+                      </div>
+                    </div>
+                  </div>
+                  <!-- # Faq item-->
+
+                  <div class="accordion-item">
+                    <h3 class="accordion-header">
+                      <button
+                        class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#faq-content-4"
+                      >
+                        Get upto 15% cashback on a transaction with Mobikwik
+                        wallet!
+                      </button>
+                    </h3>
+                    <div
+                      id="faq-content-4"
+                      class="accordion-collapse collapse"
+                      data-bs-parent="#faqlist"
+                    >
+                      <div class="accordion-body">
+                        Terms & Conditions Get upto 15% cashback on a
+                        transaction with Mobikwik wallet! Transaction to be done
+                        through Mobikwik wallet only. Offer can be availed on a
+                        minimum transaction of INR 800/- Validity till 29th
+                        February 2024.
+                      </div>
+                    </div>
+                  </div>
+                  <!-- # Faq item-->
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!--
+                      <a>
+                        <h3 class="product__title">{{ gift.name }}</h3>
+                      </a>
+                      <div class="product__price flex">
+                        <span class="new__price"
+                          ><i class="bi bi-currency-rupee"></i
+                          >{{ gift.price }}</span
+                        >
+                      </div>
+                    </div> -->
+      <!-- <div>
+                      <button
+                        *ngIf="isGiftSelected(gift._id)"
+                        class="btns2"
+                        (click)="removeGift(gift)"
+                      >
+                        Remove
+                      </button>
+                      <button
+                        *ngIf="!isGiftSelected(gift._id)"
+                        class="btns2"
+                        (click)="addGift(gift)"
+                      >
+                        Add
+                      </button>
+                    </div> -->
+    </div>
+    <!-- </div> -->
+    <!-- <div class="floating-box" *ngIf="data.frame && img">
+      <div>
+        <app-frames
+          [frameSrc]="data.frame"
+          (image)="addFile($event)"
+          (file)="addCaputue($event)"
+        ></app-frames>
+      </div>
+    </div> -->
+  </section>
+
+  <!-- </div>
+      </div>
+   -->
+
+  <section class="details__tab container mb-5">
+    <div class="detail__tabs">
+      <span class="detail__tab active-tab" data-target="#info">
+        Additional Info
+      </span>
+    </div>
+    <div class="details__tabs-content">
+      <div class="details__tab-content active-tab" content id="info">
+        <table class="info__table">
+          <tr *ngFor="let info of data.additionalInfo">
+            <th>{{ info.title }}</th>
+            <td>{{ info.description }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <div *ngIf="addCrt || buyNw" class="spin" style="z-index: 100">
+    <section class="new__arrivals container section bg-white rounded-3">
+      <div class="text-end mb-3">
+        <button
+          (click)="addCrt = false; buyNw = false"
+          type="button"
+          class="btn-close"
+          aria-label="Close"
+        ></button>
+      </div>
+      <h3 class="section__title" data-aos="fade-right">
+        <span>Make</span> It Special
+      </h3>
+      <div class="new__container swiper">
+        <div class="swiper-wrapper">
+          <ng-container *ngFor="let gift of gifts; let i = index">
+            <div class="product__item swiper-slide" *ngIf="gift.quantity > 0">
+              <div class="product__banner">
+                <a class="product__images1">
+                  <img
+                    [src]="gift.thumbnail"
+                    alt=""
+                    class="product__img default"
+                  />
+                </a>
+                <div class="product__actions">
+                  <a class="action__btn" aria-label="Add to Wishlist">
+                    <i class="fa-solid fa-heart"></i>
+                  </a>
+                </div>
+              </div>
+
+              <div class="product__content">
+                <span class="product__category">Gifts</span>
+                <a>
+                  <h3 class="product__title">{{ gift.name }}</h3>
+                </a>
+                <app-star-rating></app-star-rating>
+                <div class="product__price1 flex">
+                  <span class="new__price"
+                    ><i class="bi bi-currency-rupee"></i>{{ gift.price }}</span
+                  >
+                  <span class="new__price" style="float: right">
+                    <input
+                      type="number"
+                      class="quantity"
+                      [(ngModel)]="gift.selected_quantity"
+                      [max]="gift.quantity"
+                      min="1"
+                  /></span>
+
+                  <!-- <span>
+              <input
+              type="number"
+              
+            /></span> -->
+
+                  <!-- <a
+                
+                class="action__btn cart__btn"
+                aria-label="Add To Cart"
+              >
+                <i class="fa fa-shopping-cart"></i>
+              </a> -->
+                </div>
+                <div style="padding-top: 20px; padding-bottom: 10px">
+                  <button
+                    *ngIf="isGiftSelected(gift._id)"
+                    class="btns2"
+                    (click)="removeGift(gift)"
+                  >
+                    Remove
+                  </button>
+                  <button
+                    *ngIf="!isGiftSelected(gift._id)"
+                    class="btns2"
+                    (click)="addGift(gift)"
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+        <div class="swiper-button-prev">
+          <i class="fa-solid fa-circle-chevron-left"></i>
+        </div>
+        <div class="swiper-button-next">
+          <i class="fa-solid fa-circle-chevron-right"></i>
+        </div>
+      </div>
+      <div class="text-end mt-3">
+        <button *ngIf="addCrt" (click)="addCart(data._id)" class="btns">
+          Add To Cart
+        </button>
+        <button *ngIf="buyNw" (click)="buyNow(data._id)" class="btns">
+          Buy Now
+        </button>
+      </div>
+    </section>
+  </div>
+
+  <!-- <section class="new__arrivals container section">
+    <h3 class="section__title" data-aos="fade-right">
+      <span>Make</span> It Special
+    </h3>
+    <div class="new__container swiper">
+      <div class="swiper-wrapper">
+        <ng-container *ngFor="let gift of gifts; let i = index">
+          <div
+            class="product__item swiper-slide"
+            data-aos="flip-right"
+            data-aos="flip-right"
+          >
+            <div class="product__banner">
+              <a class="product__images1">
+                <img
+                  [src]="gift.thumbnail"
+                  alt=""
+                  class="product__img default"
+                />
+              </a>
+            
+            </div>
+            <div class="product__content">
+              <a>
+                <h3 class="product__title">{{ gift.name }}</h3>
+              </a>
+              <div class="product__price flex">
+                <span class="new__price"
+                  ><i class="bi bi-currency-rupee"></i>{{ gift.price }}</span
+                >
+              </div>
+              <input
+                type="number"
+                [(ngModel)]="gift.selected_quantity"
+                [max]="gift.quantity"
+                min="1"
+              />
+            </div>
+            <div>
+              <button
+                *ngIf="isGiftSelected(gift._id)"
+                class="btns2"
+                (click)="removeGift(gift)"
+              >
+                Remove
+              </button>
+              <button
+                *ngIf="!isGiftSelected(gift._id)"
+                class="btns2"
+                (click)="addGift(gift)"
+              >
+                Add
+              </button>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <div class="swiper-button-prev">
+        <i class="fi fi-rs-angle-left"></i>
+      </div>
+      <div class="swiper-button-next">
+        <i class="fi fi-rs-angle-right"></i>
+      </div>
+    </div>
+  </section> -->
+
+  <!-- <section id="faq" class="new__arrivals container section">
+    <h3 class="section__title" data-aos="fade-right">
+      <span>Get</span> Offers:
+    </h3>
+    <div data-aos="fade-up">
+   
+      <div
+        class="row justify-content-center"
+        data-aos="fade-up"
+        data-aos-delay="200"
+      >
+        <div class="col-lg-10">
+          <div class="accordion accordion-flush" id="faqlist">
+            <div class="accordion-item">
+              <h3 class="accordion-header">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#faq-content-1"
+                >
+                  Get Flat 10% off, for first time users
+                </button>
+              </h3>
+              <div
+                id="faq-content-1"
+                class="accordion-collapse collapse"
+                data-bs-parent="#faqlist"
+              >
+                <div class="accordion-body">
+                  Terms & Conditions Code is valid for the first time buyers
+                  only Code can be used one time per user only A minimum order
+                  value of ₹699 is required to be eligible for this offer Max
+                  discount of ₹100 can be availed Discount is not applicable on
+                  shipping fees Offer is not applicable on gold & silver items,
+                  electronics and gift cards Offer is for a limited time period
+                  only & can be modified or discontinued without prior
+                  intimation Offer cannot be clubbed with any other ongoing
+                  offers or codes
+                </div>
+              </div>
+            </div>
+           
+
+            <div class="accordion-item">
+              <h3 class="accordion-header">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#faq-content-2"
+                >
+                  Get Flat 15% Cashback, Use Code LOYAL
+                </button>
+              </h3>
+              <div
+                id="faq-content-2"
+                class="accordion-collapse collapse"
+                data-bs-parent="#faqlist"
+              >
+                <div class="accordion-body">
+                  Terms & Conditions A minimum order value of ₹599 is required
+                  to be eligible for this offer Max discount of ₹200 can be
+                  availed Cashback is valid upto 90 days Discount is not
+                  applicable on shipping fees Offer is not applicable on gold &
+                  silver items, electronics and gift cards Offer is for a
+                  limited time period only & can be modified or discontinued
+                  without prior intimation Offer cannot be clubbed with any
+                  other ongoing offers or codes
+                </div>
+              </div>
+            </div>
+           
+
+            <div class="accordion-item">
+              <h3 class="accordion-header">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#faq-content-3"
+                >
+                  Flat 5% cashback upto INR 750 (New user to Simpl)
+                </button>
+              </h3>
+              <div
+                id="faq-content-3"
+                class="accordion-collapse collapse"
+                data-bs-parent="#faqlist"
+              >
+                <div class="accordion-body">
+                  Terms & Conditions Get 5% cashback up to INR 750 on your first
+                  transaction on Simpl A minimum order value of INR 749 is
+                  required to be eligible for this offer Offer valid once per
+                  user on Simpl, during the offer period Offer is valid only for
+                  New Users to Simpl Offer valid from 1st March to 31st March
+                  2024 No coupon code is required Eligible cashback amount and
+                  details will reflect in the user's Simpl account, within 5
+                  minutes of a successful transaction The eligible amount will
+                  be credited to a user’s Simpl account post settlement of the
+                  current dues Cashback will be cancelled in case of full
+                  refunds or cancellation of orders To check your transaction
+                  history and cashback amount, download the Simpl App available
+                  on Google Play Store & the App store Happy to assist you with
+                  further concerns. Please write to help&#64;getsimpl.com. Or
+                  chat with the Simpl team on the Simpl app
+                </div>
+              </div>
+            </div>
+           
+
+            <div class="accordion-item">
+              <h3 class="accordion-header">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#faq-content-4"
+                >
+                  Get upto 15% cashback on a transaction with Mobikwik wallet!
+                </button>
+              </h3>
+              <div
+                id="faq-content-4"
+                class="accordion-collapse collapse"
+                data-bs-parent="#faqlist"
+              >
+                <div class="accordion-body">
+                  Terms & Conditions Get upto 15% cashback on a transaction with
+                  Mobikwik wallet! Transaction to be done through Mobikwik
+                  wallet only. Offer can be availed on a minimum transaction of
+                  INR 800/- Validity till 29th February 2024.
+                </div>
+              </div>
+            </div>
+       
+          </div>
+        </div>
+      </div>
+    </div>
+  </section> -->
+
+  <section class="products container section--lg">
+    <h3 class="section__title"><span>Related</span> Products</h3>
+    <div class="new__container swiper">
+      <div class="swiper-wrapper">
+        <div
+          *ngFor="let related of relatedProduct"
+          class="product__item swiper-slide"
+          data-aos="flip-right"
+        >
+          <div class="product__banner">
+            <a [routerLink]="['/product', related._id]" class="product__images">
+              <img [src]="related.image" alt="" class="product__img default" />
+              <img
+                src="assets/img/product-1-2.jpg"
+                alt=""
+                class="product__img hover"
+              />
+            </a>
+            <div class="product__actions">
+              <a
+                (click)="addWish(related._id)"
+                class="action__btn"
+                aria-label="Add to Wishlist"
+              >
+                <i class="fi fi-rs-heart"></i>
+              </a>
+            </div>
+          </div>
+          <div class="product__content">
+            <span class="product__category">{{
+              related.category.categoryName
+            }}</span>
+            <a [routerLink]="['/product', related._id]">
+              <h3 class="product__title">{{ related.title }}</h3>
+            </a>
+            <div class="product__price flex">
+              <span class="new__price">${{ related.amount }}</span>
+              <span class="old__price">${{ related.price }}</span>
+              <a
+                [routerLink]="['/product', related._id]"
+                class="action__btn cart__btn"
+                aria-label="Add To Cart"
+              >
+                <i class="fi fi-rs-shopping-bag-add"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="swiper-button-prev">
+        <i class="fi fi-rs-angle-left"></i>
+      </div>
+      <div class="swiper-button-next">
+        <i class="fi fi-rs-angle-right"></i>
+      </div>
+    </div>
+  </section>
+</main>

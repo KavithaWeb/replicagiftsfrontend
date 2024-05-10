@@ -1,0 +1,14 @@
+#dropdown {
+  z-index: 10000;
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50px;
+  margin-right: 5px;
+}
+
+.zindex {
+  z-index: 1000;
+}

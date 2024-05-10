@@ -1,0 +1,23 @@
+.scroll-top-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #ff6200;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+  width: 45px;
+  height: 45px;
+    cursor: pointer;
+    display: none; /* Initially hide the button */
+  }
+
+  .scroll-top-btn:hover {
+    background-color: #3b3b3b;
+    color: #ff5500;
+
+  }
+  
+  .scroll-top-btn.show {
+    display: block; /* Show the button when scrolled */
+  }

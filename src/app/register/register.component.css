@@ -1,0 +1,25 @@
+.card-header {
+  background-color: rgb(50, 50, 50);
+  color: white !important;
+}
+
+.card-header h2 {
+  color: white !important;
+}
+
+.card-footer {
+  border: none;
+  background-color: white;
+}
+
+.card-footer a{
+    color: rgb(255, 111, 0);
+}
+
+.card-header{
+    margin-bottom: 20px;
+ }
+
+ .card{
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}

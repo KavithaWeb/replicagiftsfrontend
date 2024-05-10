@@ -1,0 +1,49 @@
+<section class="m-0 p-0">
+  <div class="file-container {{ hide ? 'hide' : '' }}">
+    <div class="position-relative w-100 h-100">
+      <i class="fa fa-upload icon"></i>
+      <input
+        type="file"
+        (change)="handleFileInput($event)"
+        class="file-input"
+        id="fileInput"
+        accept="image/*"
+      />
+      <span class="up">UPLOAD</span>
+    </div>
+  </div>
+
+  <div
+    id="canvas-container"
+    (mousemove)="edit = true"
+    (mouseenter)="edit = true"
+    (mouseover)="edit = true"
+    (mouseleave)="edit = false; captureScreenshot()"
+  >
+    <img
+      [src]="frameSrc"
+      id="overLay"
+      class="{{ edit ? '' : 'index' }}"
+      alt=""
+      srcset=""
+    />
+    <canvas
+      #canvas1
+      id="canvas1"
+      class="{{ edit ? 'opacity' : '' }}"
+      width="500"
+      height="600"
+      [style.backgroundColor]="'transparent'"
+      (mousedown)="mouseDownHandler($event)"
+      (mousemove)="mouseMoveHandler($event)"
+      (mouseup)="mouseUpHandler($event)"
+      (mouseenter)="mouseEnterHandler()"
+      (mouseleave)="captureScreenshot()"
+      tabindex="1"
+      style="position: absolute; top: 0; left: 0;"
+    >
+      > Sorry, your browser doesn't support canvas technology.
+    </canvas>
+  </div>
+  <!-- <button class="btn" (click)="captureScreenshot()">Download</button> -->
+</section>

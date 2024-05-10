@@ -1,0 +1,32 @@
+.card-header{
+    background-color: rgb(31, 31, 31);
+    color: white !important;
+}
+
+.card-header h2{
+
+    color: white !important;
+}
+
+.card-footer a{
+    color: rgb(255, 111, 0);
+}
+
+.card-footer{
+    border: none;
+    background-color: white;
+}
+
+.card{
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+/* .form-control{
+    padding-left: 10px;
+    padding-right: 10px;
+} */
+
+
+.card-header{
+   margin-bottom: 20px;
+}

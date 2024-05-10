@@ -1,0 +1,50 @@
+.icon-hover-primary:hover {
+    border-color: #3b71ca !important;
+    background-color: white !important;
+  }
+  
+  .icon-hover-primary:hover i {
+    color: #3b71ca !important;
+  }
+  .icon-hover-danger:hover {
+    border-color: #dc4c64 !important;
+    background-color: white !important;
+  }
+  
+  .icon-hover-danger:hover i {
+    color: #dc4c64 !important;
+  }
+
+.section__title{
+  padding-top: 20px;
+}
+
+.tab__content{
+  display: block;
+ 
+}
+
+.tab__body{
+  text-align: center;
+}
+
+.placed__order-table th{
+  text-align: center;
+  padding-left: 20px;
+}
+
+.placed__order-table tbody td{
+  text-align: center;
+  padding-left: 20px;
+}
+
+/* .tab__content {
+  
+} */
+
+.row>* {
+
+  padding-right: 0px;
+  padding-left: 0px;
+ 
+}

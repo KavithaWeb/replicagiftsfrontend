@@ -1,0 +1,325 @@
+<div class="headertop">
+  <div class="headertopname">Shopping Products</div>
+</div>
+
+<div class="spin" *ngIf="spinner">
+  <app-spinner></app-spinner>
+</div>
+
+<main class="main">
+  <section class="products container row col-lg-12">
+    <!-- <p class="total__products">SELECT YOUR PHOTOS! <span></span></p> -->
+
+    <!-- <div class="header__contact">
+          <span><i class="fa-brands fa-whatsapp"></i></span>
+          <span><i class="fa-brands fa-facebook-f"></i>(+91 9144493444)</span>
+        </div> -->
+    <!-- <p class="header__alert-news">
+        </p> -->
+    <div>
+      <div
+        class="nav__list"
+        style="
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding-top: 15px;
+          padding-bottom: 15px;
+          padding-left: 15px;
+          padding-right: 15px;
+          border-radius: 50px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          margin-bottom: 30px;
+        "
+      >
+        <div class="header__search" data-aos="fade-left">
+          <input
+            type="text"
+            placeholder="Search Photos..."
+            class="form__input"
+            [(ngModel)]="searchText"
+            (input)="search()"
+            (change)="navtoproduct()"
+            list="filterOptions"
+          />
+          <datalist id="filterOptions">
+            <option *ngFor="let filter of searchMenu">
+              {{ filter.title }}
+            </option>
+          </datalist>
+          <button class="search__btns">
+            <img
+              src="../.././../assets/assets/img/search-icon.svg"
+              alt="search icon"
+            />
+          </button>
+        </div>
+
+        <div class="nav__item">
+          <a class="nav__link" style="color: rgb(136, 136, 136)"
+            >Showing {{ count }} photos</a
+          >
+        </div>
+
+        <div class="nav__item">
+          <a
+            class="nav__link"
+            style="padding-right: 20px; color: rgb(136, 136, 136)"
+            ><img
+              src="../../assets/assets/img/sort-descending-6609.svg"
+              alt=""
+              style="padding-right: 6px"
+            />SORT</a
+          >
+
+          <a (click)="applySort(0)" class="nav__link">{{
+            this.sort[selectedSort].name
+              ? this.sort[selectedSort].name
+              : "Popularities"
+          }}</a>
+          <div id="dropdown">
+            <a (click)="applySort(0)">Popularities</a>
+            <a (click)="applySort(1)">What's New</a>
+            <a (click)="applySort(2)">Price: low to high</a>
+            <a (click)="applySort(3)">Price: high to low</a>
+            <a (click)="applySort(4)">A to Z</a>
+            <a (click)="applySort(5)">Z to A</a>
+            <a (click)="applySort(6)">Customer Rating</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar col-lg-3">
+      <h3>
+        <img
+          style="width: 30px; height: 30px; margin-right: 20px"
+          src="../../assets/assets/img/noun-filter-4800805.svg"
+          alt=""
+        />Filter
+      </h3>
+      <!-- <input type="text" placeholder="Product Search..." class="form__input" /> -->
+      <hr />
+      <h3>Category</h3>
+      <ul class="category-list">
+        <li>
+          <input
+            type="radio"
+            class="checkboxsyle"
+            name="category"
+            value="All"
+            (change)="filterCategory('All')"
+          />All
+        </li>
+        <li *ngFor="let category of categories">
+          <input
+            type="radio"
+            class="checkboxsyle"
+            name="category"
+            [value]="category._id"
+            [checked]="check === category._id"
+            (change)="filterCategory(category._id)"
+          />{{ category.categoryName }}
+        </li>
+      </ul>
+      <hr />
+      <h3>Price Range</h3>
+      <ul class="category-list">
+        <li *ngFor="let pric of ranges; let i = index">
+          <ng-container *ngIf="i !== ranges.length - 1">
+            <input
+              type="radio"
+              class="checkboxsyle"
+              name="price"
+              (change)="applyPriceRange($event, ranges[i], ranges[i + 1])"
+            />
+            <i class="bi bi-currency-rupee"></i>{{ ranges[i] }} -
+            <i class="bi bi-currency-rupee"></i>{{ ranges[i + 1] }}
+          </ng-container>
+        </li>
+      </ul>
+      <hr />
+      <h3>Discount Range</h3>
+
+      <ul class="category-list">
+        <li>
+          <input
+            type="radio"
+            class="checkboxsyle"
+            name="discount"
+            (change)="applyDiscount($event, null, null)"
+          />
+          All
+        </li>
+        <li *ngFor="let dis of discounts">
+          <input
+            type="radio"
+            class="checkboxsyle"
+            name="discount"
+            (change)="applyDiscount($event, dis.min, dis.max)"
+          />{{
+            dis.max !== 100
+              ? "" + dis.min + "% Off to " + dis.max + "% Off"
+              : "" + dis.min + "% Off or More"
+          }}
+        </li>
+      </ul>
+
+      <!-- <hr />
+      <h3>Review Range</h3>
+
+      <ul class="category-list">
+        <li *ngFor="let rating of [1, 2, 3, 4]" style="display: flex">
+          <input
+            class="form-check"
+            type="radio"
+            name="rating"
+            (click)="applyRating($event, rating)"
+          />
+          <app-star-rating
+            [rating]="rating"
+            [readonly]="true"
+          ></app-star-rating>
+        </li>
+      </ul> -->
+    </div>
+
+    <div class="products__container grid col-lg-9" #targetElement>
+      <div
+        *ngFor="let product of products; let i = index"
+        class="product__item"
+      >
+        <div class="product__banner">
+          <a (click)="nav(product._id)" class="product__images1">
+            <img
+              id="productImage"
+              [src]="product.image"
+              alt=""
+              class="product__img default"
+              style="height: 250px"
+            />
+          </a>
+          <div class="product__actions">
+            <a
+              (click)="addWish(product)"
+              class="action__btn"
+              [attr.aria-label]="
+                wishlist.includes(product._id)
+                  ? 'Remove from Wishlist'
+                  : 'Add to Wishlist'
+              "
+            >
+              <i
+                class="fa-solid fa-heart {{
+                  wishlist.includes(product._id)
+                    ? 'text-bg-danger text-danger '
+                    : ''
+                }}"
+              ></i>
+            </a>
+          </div>
+        </div>
+        <div class="product__content">
+          <span class="product__category">{{
+            product.category.categoryName
+          }}</span>
+          <a (click)="nav(product._id)">
+            <h3 class="product__title">{{ product.title }}</h3>
+          </a>
+          <app-star-rating
+            [rating]="product.totalrating"
+            [readonly]="true"
+          ></app-star-rating>
+          <div class="product__price flex">
+            <span class="new__price"
+              ><i class="bi bi-currency-rupee"></i>{{ product.amount }}</span
+            >
+            <span class="old__price"
+              ><i class="bi bi-currency-rupee"></i>{{ product.price }}</span
+            >
+            <a
+              (click)="nav(product._id)"
+              class="action__btn cart__btn"
+              aria-label="Add To Cart"
+            >
+              <i class="fa fa-shopping-cart"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex justify-content-center w-100 my-5 ms-lg-5">
+      <ng-container>
+        <button
+          *ngIf="selectedFilters.page > 1"
+          class="btns3 btn-link"
+          (click)="
+            selectedFilters.page = selectedFilters.page - 1; applySearch()
+          "
+        >
+          <i class="bi bi-arrow-left"></i>
+        </button>
+
+        <!-- Display page numbers -->
+        <ng-container *ngIf="pageNo.length <= 5">
+          <!-- If total pages are 5 or less, display all page numbers -->
+          <button
+            class="btns3"
+            [class.active]="selectedFilters.page === page"
+            *ngFor="let page of pageNo"
+            (click)="selectedFilters.page = page; applySearch()"
+          >
+            {{ page }}
+          </button>
+        </ng-container>
+
+        <ng-container *ngIf="pageNo.length > 5">
+          <!-- Display first page -->
+          <button
+            class="btns3"
+            [class.active]="selectedFilters.page === 1"
+            (click)="selectedFilters.page = 1; applySearch()"
+          >
+            1
+          </button>
+
+          <!-- Display ellipsis if necessary -->
+          <span *ngIf="selectedFilters.page > 3">...</span>
+
+          <!-- Display pages around the selected page -->
+          <ng-container *ngFor="let page of getVisiblePageNumbers()">
+            <button
+              class="btns3"
+              [class.active]="selectedFilters.page === page"
+              (click)="selectedFilters.page = page; applySearch()"
+            >
+              {{ page }}
+            </button>
+          </ng-container>
+
+          <!-- Display ellipsis if necessary -->
+          <span *ngIf="selectedFilters.page < pageNo.length - 2">...</span>
+
+          <!-- Display last page -->
+          <button
+            class="btns3"
+            [class.active]="selectedFilters.page === pageNo.length"
+            (click)="selectedFilters.page = pageNo.length; applySearch()"
+          >
+            {{ pageNo.length }}
+          </button>
+        </ng-container>
+
+        <button
+          *ngIf="selectedFilters.page < pageNo.length"
+          class="btns3 btn-link"
+          (click)="
+            selectedFilters.page = selectedFilters.page + 1; applySearch()
+          "
+        >
+          <i class="bi bi-arrow-right"></i>
+        </button>
+      </ng-container>
+    </div>
+  </section>
+</main>

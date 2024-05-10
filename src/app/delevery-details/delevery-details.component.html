@@ -1,0 +1,532 @@
+<div *ngIf="spinner" class="spin">
+  <app-spinner></app-spinner>
+</div>
+
+<div
+  class="headertop"
+   
+>
+  <div class="headertopname"
+     
+  >
+    Checkout
+  </div>
+</div>
+
+<!--=============== MAIN ===============-->
+<main class="main">
+  <!--=============== BREADCRUMB ===============-->
+  <section class="breadcrumb">
+    <ul class="breadcrumb__list flex container">
+      <li><a class="breadcrumb__link">Home</a></li>
+      <li><span class="breadcrumb__link">></span></li>
+      <li><span class="breadcrumb__link">Shop</span></li>
+      <li><span class="breadcrumb__link">></span></li>
+      <li><span class="breadcrumb__link">Checkout</span></li>
+    </ul>
+  </section>
+
+  <!--=============== CHECKOUT ===============-->
+
+  <section class="checkout">
+    <div class="checkout__container container grid">
+      <div class="checkout__group">
+        <h3 class="section__title">Billing Details</h3>
+        <div class="row g-3">
+          <!-- <div class="col-md-6">
+            <label for="inputName" class="form-label form-group required" 
+            >Name</label>
+            <input type="text" class="form-control" id="inputName" placeholder="" required="required">
+          </div> -->
+
+          <div class="new required col-md-12">
+            <label class="control-label"> First name </label>
+            <input
+              type="text"
+              class="form-control {{
+                err && !billingDetails.name ? 'is-invalid' : ''
+              }}"
+              (click)="err = false"
+              id="inputName"
+              placeholder=""
+              required="required"
+              [(ngModel)]="billingDetails.name"
+            />
+          </div>
+
+          <!-- <div class="new required col-md-12">
+            <label class='control-label'>
+              Last name
+            </label>
+            <input type="text" class="form-control" id="inputName" placeholder="" required="required">
+          </div> -->
+          <!-- <div class="new required col-md-12">
+            <label for="inputEmail" class="form-label">Email</label>
+            <input type="email" class="form-control" id="inputEmail" placeholder="">
+          </div> -->
+
+          <!-- <div class="new required col-md-12">
+            <label for="inputCity" class="form-label">City</label>
+            <input type="text" class="form-control" id="inputCity" placeholder="">
+          </div> -->
+
+          <!-- <div class="new required col-md-12">
+            <label class="control-label"> Phone </label>
+            <input
+              type="text"
+              class="form-control {{
+                err && !billingDetails.phone ? 'is-invalid' : ''
+              }}"
+              (click)="err = false"
+              id="inputName"
+              placeholder=""
+              required="required"
+              [(ngModel)]="billingDetails.phone"
+            />
+          </div> -->
+          <div class="new required col-md-12">
+            <label class="control-label"> Phone </label>
+            <div class="input-group mb-3">
+              <!-- <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1"> -->
+              <input
+                type="text"
+                class="form-control {{
+                  err && billingDetails.phone.length < 10 ? 'is-invalid' : ''
+                }}"
+                (click)="err = false"
+                id="inputName"
+                placeholder=""
+                (keypress)="validateNumber($event)"
+                required="required"
+                [(ngModel)]="billingDetails.phone"
+                maxlength="10"
+                minlength="10"
+              />
+            </div>
+          </div>
+
+          <div class="new required col-md-12">
+            <label class="control-label"> Email </label>
+            <input
+              type="email"
+              class="form-control {{
+                err && !this.isValidEmail(this.billingDetails.email)
+                  ? 'is-invalid'
+                  : ''
+              }}"
+              (click)="err = false"
+              id="inputName"
+              placeholder=""
+              required="required"
+              [(ngModel)]="billingDetails.email"
+            />
+          </div>
+
+          <!-- <div class="new required col-md-12">
+            <label for="inputCountry" class="form-label">Country</label>
+            <input type="text" class="form-control" id="inputCountry" placeholder="">
+          </div> -->
+
+          <!-- <div class="col-md-12">
+            <label for="inputAddress" class="form-label">Address</label>
+            <input type="text" class="form-control" id="inputAddress" placeholder="">
+          </div> -->
+
+          <div class="new required col-md-12">
+            <label class="control-label"> Street Address </label>
+            <input
+              type="text"
+              class="form-control {{
+                err && !billingDetails.address ? 'is-invalid' : ''
+              }}"
+              (click)="err = false"
+              id="inputName"
+              placeholder=""
+              required="required"
+              [(ngModel)]="billingDetails.address"
+            />
+          </div>
+
+          <div class="new required col-md-12">
+            <label class="control-label"> City </label>
+            <input
+              type="text"
+              class="form-control {{
+                err && !billingDetails.city ? 'is-invalid' : ''
+              }}"
+              (click)="err = false"
+              id="inputName"
+              placeholder=""
+              required="required"
+              [(ngModel)]="billingDetails.city"
+            />
+          </div>
+
+          <div class="new required col-md-12">
+            <label class="control-label"> Country </label>
+            <input
+              class="form-control {{
+                err && !billingDetails.country ? 'is-invalid' : ''
+              }}"
+              disabled="true"
+              (click)="err = false"
+              id="inputName"
+              required="required"
+              [(ngModel)]="billingDetails.country"
+            />
+          </div>
+
+          <div class="new required col-md-12">
+            <label class="control-label"> State </label>
+            <select
+              class="form-control {{
+                err && !billingDetails.state ? 'is-invalid' : ''
+              }}"
+              (click)="err = false"
+              id="inputName"
+              required="required"
+              [(ngModel)]="billingDetails.state"
+            >
+              <option value="">Select State</option>
+              <option *ngFor="let state of states" [value]="state">
+                {{ state }}
+              </option>
+
+              <!-- Add more options as needed -->
+            </select>
+          </div>
+
+          <!-- <div class="new required col-md-6">
+            <label for="inputPostcode" class="form-label">Postcode</label>
+            <input type="text" class="form-control" id="inputPostcode" placeholder="">
+          </div> -->
+
+          <div class="new required col-md-12">
+            <label class="control-label"> Postcode </label>
+            <input
+              type="text"
+              class="form-control {{
+                err && billingDetails.postcode.length < 6 ? 'is-invalid' : ''
+              }}"
+              (keypress)="validateNumber($event)"
+              id="inputName"
+              placeholder=""
+              maxlength="6"
+              minlength="6"
+              required
+              [(ngModel)]="billingDetails.postcode"
+            />
+          </div>
+
+          <!-- <div class="new required col-md-6">
+            <label for="inputPhone" class="form-label">Phone</label>
+            <input type="text" class="form-control" id="inputPhone" placeholder="">
+          </div> -->
+        </div>
+        <p class="text-danger" *ngIf="err">{{ err }}</p>
+      </div>
+      <!-- <div class="checkout__group">
+        <h3 class="section__title">Cart Totals</h3>
+        <table class="order__table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Product Name</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let prod of shoppingCart">
+              <tr *ngIf="shoppingCart">
+                <td>
+                  <img
+                    [src]="prod.productId.image"
+                    class="order__img"
+                    alt=""
+                    srcset=""
+                  />
+                </td>
+                <td>
+                  <h3 class="table__title">
+                    {{ prod.productId.title }} x {{ prod.quantity }}
+                    <ng-container *ngIf="prod.userWant.gifts.length > 0">
+                      <p style="color: rgb(255, 145, 0); font-size: 18px">+</p>
+                      <ul class="list-unstyled">
+                        <li *ngFor="let gif of prod.userWant.gifts">
+                          {{ gif.gift.name }} x {{ gif.quantity }}
+                        </li>
+                      </ul>
+                    </ng-container>
+                  </h3>
+                </td>
+                <td>
+                  <span class="table__price"
+                    ><i class="bi bi-currency-rupee"></i
+                    >{{ prod.userWant.totalAmount }}</span
+                  >
+                </td>
+              </tr>
+            </ng-container>
+            <tr *ngIf="product">
+              <td>
+                <img [src]="product.image" alt="" class="order__img" />
+              </td>
+              <td>
+                <h3 class="table__title">
+                  {{ product.title }} x {{ quantity }}
+                  <ng-container *ngIf="gifts.length > 0">
+                    <p style="color: rgb(255, 145, 0); font-size: 18px">+</p>
+
+                    <ul class="list-unstyled">
+                      <li *ngFor="let gif of gifts">
+                        {{ gif.gift.name }} x {{ gif.quantity }}
+                      </li>
+                    </ul>
+                  </ng-container>
+                </h3>
+                <p class="table__quantity"></p>
+              </td>
+              <td>
+                <span class="table__price"
+                  ><i class="bi bi-currency-rupee"></i>{{ totalPrice }}</span
+                >
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span class="order__grand-total"></span>
+              </td>
+              <td><span class="order__subtitle">Total</span></td>
+              <td>
+                <span class="order__grand-total"
+                  ><i class="bi bi-currency-rupee"></i>{{ totalPrice }}</span
+                >
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="payment__methods"></div>
+        <button (click)="checkout()" class="btns btn--md">Place Order</button>
+      </div> -->
+
+      <!-- cart + summary -->
+
+      <section class="" style="padding-top: 30px">
+        <div class="">
+          <div class="row">
+            <!-- cart -->
+
+            <!-- <h3 class="section__title">Cart Totals</h3>
+            <div class="checkout__group col-lg-9">
+              <table class="order__table">
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Product Name</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let prod of shoppingCart">
+                    <tr *ngIf="shoppingCart">
+                      <td>
+                        <img
+                          [src]="prod.productId.image"
+                          class="order__img"
+                          alt=""
+                          srcset=""
+                        />
+                      </td>
+                      <td>
+                        <h3 class="table__title">
+                          {{ prod.productId.title }} x {{ prod.quantity }}
+                          <ng-container *ngIf="prod.userWant.gifts.length > 0">
+                            <p style="color: rgb(255, 145, 0); font-size: 18px">
+                              +
+                            </p>
+                            <ul class="list-unstyled">
+                              <li *ngFor="let gif of prod.userWant.gifts">
+                                {{ gif.gift.name }} x {{ gif.quantity }}
+                              </li>
+                            </ul>
+                          </ng-container>
+                        </h3>
+                      </td>
+                      <td>
+                        <span class="table__price"
+                          ><i class="bi bi-currency-rupee"></i
+                          >{{ prod.userWant.totalAmount }}</span
+                        >
+                      </td>
+                    </tr>
+                  </ng-container>
+                  <tr *ngIf="product">
+                    <td>
+                      <img [src]="product.image" alt="" class="order__img" />
+                    </td>
+                    <td>
+                      <h3 class="table__title">
+                        {{ product.title }} x {{ quantity }}
+                        <ng-container *ngIf="gifts.length > 0">
+                          <p style="color: rgb(255, 145, 0); font-size: 18px">
+                            +
+                          </p>
+
+                          <ul class="list-unstyled">
+                            <li *ngFor="let gif of gifts">
+                              {{ gif.gift.name }} x {{ gif.quantity }}
+                            </li>
+                          </ul>
+                        </ng-container>
+                      </h3>
+                      <p class="table__quantity"></p>
+                    </td>
+                    <td>
+                      <span class="table__price"
+                        ><i class="bi bi-currency-rupee"></i
+                        >{{ totalPrice }}</span
+                      >
+                    </td>
+                  </tr>
+                 
+                </tbody>
+              </table>
+              <div class="payment__methods"></div>
+            </div> -->
+
+            <div class="tab__content col-lg-9" content id="orders">
+              <h4 class="tab__header">Your Cart</h4>
+              <div class="tab__body">
+                <table class="placed__order-table">
+                  <thead>
+                    <tr>
+                      <th>Product</th>
+                      <th>Product Quantity</th>
+                      <th>Gifts</th>
+                      <th>Gifts Quantity</th>
+                      <th>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container *ngFor="let prod of shoppingCart">
+                      <tr *ngIf="prod.userWant.gifts.length > 0; else noGifts">
+                        <td [rowSpan]="prod.userWant.gifts.length">
+                          <h3 class="table__title">
+                            {{ prod.productId.title }}
+                          </h3>
+                        </td>
+                        <td [rowSpan]="prod.userWant.gifts.length">
+                          {{ prod.userWant.quantity }}
+                        </td>
+                        <td>{{ prod.userWant.gifts[0].gift.name }}</td>
+                        <td>{{ prod.userWant.gifts[0].quantity }}</td>
+                        <td [rowSpan]="prod.userWant.gifts.length">
+                          <h3 class="table__title">
+                            {{ prod.userWant.totalAmount }}
+                          </h3>
+                        </td>
+                      </tr>
+                      <tr *ngFor="let gif of prod.userWant.gifts.slice(1)">
+                        <td>{{ gif.gift.name }}</td>
+                        <td>{{ gif.quantity }}</td>
+                      </tr>
+                      <ng-template #noGifts>
+                        <tr>
+                          <td>{{ prod.productId.title }}</td>
+                          <td>{{ prod.userWant.quantity }}</td>
+                          <td>No gifts</td>
+                          <td>-</td>
+                          <td>{{ prod.userWant.totalAmount }}</td>
+                        </tr>
+                      </ng-template>
+                    </ng-container>
+                    <ng-container *ngIf="product">
+                      <tr *ngIf="gifts.length > 0; else noGifts">
+                        <td [rowSpan]="gifts.length">
+                          <h3 class="table__title">
+                            {{ product.title }}
+                          </h3>
+                        </td>
+                        <td [rowSpan]="gifts.length">
+                          {{ quantity }}
+                        </td>
+                        <td>{{ gifts[0].gift.name }}</td>
+                        <td>{{ gifts[0].quantity }}</td>
+                        <td [rowSpan]="gifts.length">
+                          <h3 class="table__title">
+                            {{ totalPrice }}
+                          </h3>
+                        </td>
+                      </tr>
+                      <tr *ngFor="let gif of gifts.slice(1)">
+                        <td>{{ gif.gift.name }}</td>
+                        <td>{{ gif.quantity }}</td>
+                      </tr>
+                      <ng-template #noGifts>
+                        <tr>
+                          <td>{{ product.title }}</td>
+                          <td>{{ quantity }}</td>
+                          <td>No gifts</td>
+                          <td>-</td>
+                          <td>{{ totalPrice }}</td>
+                        </tr>
+                      </ng-template>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="col-lg-3" style="padding-left: 20px">
+              <div class="card border">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between">
+                    <p class="mb-2">Sub Total:</p>
+                    <p class="mb-2">
+                      <i class="bi bi-currency-rupee"></i>{{ subTotal }}
+                    </p>
+                  </div>
+                  <br />
+                  <div class="d-flex justify-content-between">
+                    <p class="mb-2">Gift Total:</p>
+                    <p class="mb-2">
+                      <i class="bi bi-currency-rupee"></i>{{ giftsTotal }}
+                    </p>
+                  </div>
+                  <br />
+                  <div class="d-flex justify-content-between">
+                    <p class="mb-2">Total price:</p>
+                    <p class="mb-2">
+                      <i class="bi bi-currency-rupee"></i>{{ totalPrice }}
+                    </p>
+                  </div>
+                  <br />
+                  <div class="d-flex justify-content-between">
+                    <p class="mb-2">Shipping:</p>
+                    <p class="mb-2 text-success">Free</p>
+                  </div>
+
+                  <hr />
+                  <div class="d-flex justify-content-between">
+                    <p class="mb-2 fw-bold">Total price:</p>
+                    <p class="mb-2 fw-bold">
+                      <i class="bi bi-currency-rupee"></i>{{ totalPrice }}
+                    </p>
+                  </div>
+                  <br />
+                  <div class="mt-3">
+                    <button (click)="checkout()" class="btns2">
+                      Place Order
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- summary -->
+          </div>
+        </div>
+      </section>
+      <!-- cart + summary -->
+    </div>
+  </section>
+</main>

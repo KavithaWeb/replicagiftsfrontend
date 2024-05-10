@@ -1,0 +1,186 @@
+<!-- <div class="main-container">
+  <div class="container {{ show ? 'right-panel-active' : '' }}" id="container">
+    <div class="form-container sign-up-container">
+      <div *ngIf="show">
+        <h1>Create Account</h1>
+        <input
+          [(ngModel)]="log.username"
+          name="username"
+          type="text"
+          placeholder="Name"
+        />
+        <input
+          [(ngModel)]="log.email"
+          name="email"
+          type="email"
+          placeholder="Email"
+        />
+        <input
+          [(ngModel)]="log.password"
+          name="password"
+          type="password"
+          placeholder="Password"
+        />
+        <button (click)="register()">Sign Up</button>
+      </div>
+    </div>
+    <div class="form-container sign-in-container">
+      <div class="" *ngIf="!show">
+        <h1>Sign in</h1>
+        <input
+          type="email"
+          name="email"
+          [(ngModel)]="log.email"
+          placeholder="Email"
+        />
+        <input
+          type="password"
+          name="password"
+          [(ngModel)]="log.password"
+          placeholder="Password"
+        />
+        <a href="#">Forgot your password?</a>
+        <button (click)="login()">Sign In</button>
+      </div>
+    </div>
+    <div class="overlay-container">
+      <div class="overlay">
+        <div class="overlay-panel overlay-left">
+          <h1>Welcome Back!</h1>
+          <p>To keep connected with us please login with your personal info</p>
+          <button class="ghost" id="signIn" (click)="show = false">
+            Sign In
+          </button>
+        </div>
+        <div class="overlay-panel overlay-right">
+          <h1>Hello, Friend!</h1>
+          <p>Enter your personal details and start journey with us</p>
+          <button class="ghost" id="signUp" (click)="show = true">
+            Sign Up
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<div
+  class="headertop"
+   
+>
+  <div class="headertopname"
+     
+  >
+    Login
+  </div>
+</div>
+
+<!--=============== MAIN ===============-->
+<main class="main">
+  <!--=============== BREADCRUMB ===============-->
+  <section class="breadcrumb">
+    <ul class="breadcrumb__list flex container">
+      <li><a class="breadcrumb__link">Home</a></li>
+      <li><span class="breadcrumb__link">></span></li>
+      <li><span class="breadcrumb__link">Login</span></li>
+    </ul>
+  </section>
+
+  <section class="login-section logpad position-relative">
+    <div
+      *ngIf="spinner"
+      class="position-absolute w-100 h-100 d-flex justify-content-center align-items-center"
+      style="z-index: 10000"
+    >
+      <app-spinner></app-spinner>
+    </div>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card border-0">
+            <div class="card-header">
+              <h4 class="card-title text-center mb-0">LOGIN</h4>
+            </div>
+            <div class="card-body">
+              <form
+                (ngSubmit)="login()"
+                class="needs-validation"
+                novalidate
+                autocomplete="off"
+              >
+                <div class="mb-3">
+                  <label for="email" class="form-label">Email Address</label>
+                  <input
+                    id="email"
+                    type="email"
+                    class="form-control"
+                    name="email"
+                    [formControl]="email"
+                    [attr.required]="true"
+                    autofocus
+                    placeholder="Enter your email"
+                    (input)="err = false"
+                    
+                  />
+                  <div
+                    *ngIf="show && email.hasError('email')"
+                    class="text-danger"
+                  >
+                    Enter a valid email address.
+                  </div>
+                  <div
+                    *ngIf="show && email.hasError('required')"
+                    class="text-danger"
+                  >
+                    Please fill your registered email address.
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="password" class="form-label">Password</label>
+                  <input
+                    id="password"
+                    type="password"
+                    class="form-control"
+                    name="password"
+                    [formControl]="password"
+                    [attr.required]="true"
+                    placeholder="Enter your password"
+                    (input)="err = false"
+                  />
+                  <div
+                    *ngIf="show && password.hasError('required')"
+                    class="text-danger"
+                  >
+                    Password is required.
+                  </div>
+                </div>
+                <div class="row" style="display: flex; align-items: center; justify-content: space-between;">
+                <div class="form-check mb-3 col-lg-6">
+                  <input
+                    type="checkbox"
+                    name="remember"
+                    id="remember"
+                    class="form-check-input"
+                  />
+                  <label for="remember" class="form-check-label"
+                    >Remember Me</label
+                  >
+                </div>
+                <div class="mb-3 col-lg-6"> <a [routerLink]="['/forgot-password']">Forgot Password?</a></div>
+                </div>
+                <p class="text-danger" *ngIf="err">{{ err }}</p>
+                <div class="text-center">
+                  <button type="submit" class="btns btn-block">Login</button>
+                </div>
+              </form>
+            </div>
+            <div class="card-footer text-center">
+              Don't have an account?
+              <a [routerLink]="['/register']">Create Account</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

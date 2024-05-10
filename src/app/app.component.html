@@ -1,0 +1,23 @@
+<!-- <nav class="navbar bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand">Navbar</a>
+    <div>
+      <button href="#"  (click)="nav()" class="btn btn-primary">Home</button>
+      <button (click)="navShop()" class="btn btn-primary">Shop</button>
+      <button (click)="navWish()" class="btn btn-primary">Wish</button>
+      <button (click)="navCart()" class="btn btn-primary">Cart</button>
+      <button *ngIf="!isAuth" (click)="navToLogin()" class="btn btn-link">
+        Sign/login
+      </button>
+      <button *ngIf="isAuth" (click)="navToProfile()" class="btn btn-primary">
+        profile
+      </button>
+    </div>
+  </div>
+</nav> -->
+<app-header-all
+  [display]="display"
+  *ngIf="!isRootRoute && !isAdminRoute"
+></app-header-all>
+<router-outlet></router-outlet>
+<app-footer></app-footer>

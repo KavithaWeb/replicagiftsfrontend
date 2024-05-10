@@ -1,0 +1,647 @@
+<app-header></app-header>
+
+<main class="main" style="z-index: 1">
+  <!--=============== HOME ===============-->
+
+  <section class="home section--lg" data-aos="fade-up" style="z-index: 1">
+    <div class="home__container container grid" style="z-index: 1">
+      <div class="home__content">
+        <span class="home__subtitle">New Photo Designs</span>
+        <h1 class="home__title">
+          Get Your Customised <span>Photo Prints</span>
+        </h1>
+        <p class="home__description"></p>
+        <a (click)="navToShop()" class="btns">Shop Now</a>
+      </div>
+      <img
+        src="../../assets/assets/img/banner.jpg"
+        class="home__img"
+        style="z-index: 100"
+        alt="hats"
+        data-aos="fade-right"
+      />
+    </div>
+  </section>
+
+  <section class="categories container section">
+    <h3 class="section__title" data-aos="fade-right">
+      <span>Popular</span> Categories
+    </h3>
+    <div class="categories__container swiper" data-aos="fade-right">
+      <div class="swiper-wrapper">
+        <ng-container *ngFor="let cate of categories; let i = index">
+          <a
+            (click)="navToCategory(cate._id)"
+            class="category__item swiper-slide"
+            data-aos="flip-left"
+          >
+            <img [src]="cate.thumbnail" alt="" class="category__img" />
+            <h3 class="category__title">{{ cate.categoryName }}</h3>
+          </a>
+        </ng-container>
+      </div>
+      <div class="swiper-button-prev">
+        <i class="fa-solid fa-circle-chevron-left"></i>
+      </div>
+      <div class="swiper-button-next">
+        <i class="fa-solid fa-circle-chevron-right"></i>
+      </div>
+    </div>
+  </section>
+
+  <!--=============== NEW ARRIVALS ===============-->
+
+  <section class="new__arrivals container section">
+    <h3 class="section__title" data-aos="fade-left">
+      <span>New</span> Arrivals
+    </h3>
+    <div class="new__container swiper" data-aos="fade-left">
+      <div class="swiper-wrapper">
+        <ng-container *ngIf="newProduct.length > 0">
+          <div
+            *ngFor="let cate of newProduct; let i = index"
+            class="product__item swiper-slide"
+          >
+            <div class="product__banner">
+              <a (click)="nav(cate._id)" class="product__images1">
+                <img [src]="cate.image" alt="" class="product__img default" />
+              </a>
+              <div class="product__actions">
+                <a
+                  (click)="addWish(cate)"
+                  class="action__btn {{
+                    wishList.includes(cate._id)
+                      ? 'text-bg-danger text-danger '
+                      : ''
+                  }}"
+                  [attr.aria-label]="
+                    wishList.includes(cate._id)
+                      ? 'Remove from Wishlist'
+                      : 'Add to Wishlist'
+                  "
+                >
+                  <i class="fa-solid fa-heart"></i>
+                </a>
+              </div>
+              <div class="product__badge light-pink">New</div>
+            </div>
+
+            <div class="product__content">
+              <span class="product__category">{{
+                cate.category.categoryName
+              }}</span>
+              <a (click)="nav(cate._id)">
+                <h3 class="product__title">{{ cate.title }}</h3>
+              </a>
+              <app-star-rating
+                [rating]="cate.totalrating"
+                [readonly]="true"
+              ></app-star-rating>
+              <div class="product__price flex">
+                <span class="new__price"
+                  ><i class="bi bi-currency-rupee"></i>{{ cate.amount }}</span
+                >
+                <span class="old__price"
+                  ><i class="bi bi-currency-rupee"></i>{{ cate.price }}</span
+                >
+                <a
+                  (click)="nav(cate._id)"
+                  class="action__btn cart__btn"
+                  aria-label="Add To Cart"
+                >
+                  <i class="fa fa-shopping-cart"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <div class="swiper-button-prev">
+        <i class="fa-solid fa-circle-chevron-left"></i>
+      </div>
+      <div class="swiper-button-next">
+        <i class="fa-solid fa-circle-chevron-right"></i>
+      </div>
+    </div>
+  </section>
+
+  <section class="new__arrivals container section">
+    <h3 class="section__title" data-aos="fade-left">
+      <span>Trending</span> Now
+    </h3>
+    <div class="new__container swiper" data-aos="fade-right">
+      <div class="swiper-wrapper">
+        <ng-container *ngFor="let cate of trending; let i = index">
+          <div class="product__item swiper-slide">
+            <div class="product__banner">
+              <a (click)="nav(cate._id)" class="product__images1">
+                <img [src]="cate.image" alt="" class="product__img default" />
+                <img [src]="cate.image" alt="" class="product__img hover" />
+              </a>
+              <div class="product__actions">
+                <a
+                  (click)="addWish(cate)"
+                  class="action__btn {{
+                    wishList.includes(cate._id)
+                      ? 'text-bg-danger text-danger '
+                      : ''
+                  }}"
+                  [attr.aria-label]="
+                    wishList.includes(cate._id)
+                      ? 'Remove from Wishlist'
+                      : 'Add to Wishlist'
+                  "
+                >
+                  <i class="fa-solid fa-heart"></i>
+                </a>
+              </div>
+            </div>
+            <div class="product__content">
+              <span class="product__category">{{
+                cate.category.categoryName
+              }}</span>
+              <a (click)="nav(cate._id)">
+                <h3 class="product__title">{{ cate.title }}</h3>
+              </a>
+              <app-star-rating
+                [rating]="cate.totalrating"
+                [readonly]="true"
+              ></app-star-rating>
+              <div class="product__price flex">
+                <span class="new__price"
+                  ><i class="bi bi-currency-rupee"></i>{{ cate.amount }}</span
+                >
+                <span class="old__price"
+                  ><i class="bi bi-currency-rupee"></i>{{ cate.price }}</span
+                >
+                <a
+                  (click)="nav(cate._id)"
+                  class="action__btn cart__btn"
+                  aria-label="Add To Cart"
+                >
+                  <i class="fa fa-shopping-cart"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <div class="swiper-button-prev">
+        <i class="fa-solid fa-circle-chevron-left"></i>
+      </div>
+      <div class="swiper-button-next">
+        <i class="fa-solid fa-circle-chevron-right"></i>
+      </div>
+    </div>
+  </section>
+
+  <section class="new__arrivals container section">
+    <h3 class="section__title" data-aos="fade-left">
+      <span>Best</span> Seller
+    </h3>
+    <div class="new__container swiper" data-aos="fade-left">
+      <div class="swiper-wrapper">
+        <ng-container *ngFor="let cate of trending; let i = index">
+          <div class="product__item swiper-slide">
+            <div class="product__banner">
+              <a (click)="nav(cate._id)" class="product__images1">
+                <img [src]="cate.image" alt="" class="product__img default" />
+              </a>
+              <div class="product__actions">
+                <a
+                  (click)="addWish(cate)"
+                  class="action__btn {{
+                    wishList.includes(cate._id)
+                      ? 'text-bg-danger text-danger '
+                      : ''
+                  }}"
+                  [attr.aria-label]="
+                    wishList.includes(cate._id)
+                      ? 'Remove from Wishlist'
+                      : 'Add to Wishlist'
+                  "
+                >
+                  <i class="fa-solid fa-heart"></i>
+                </a>
+              </div>
+            </div>
+            <div class="product__content">
+              <span class="product__category">{{
+                cate.category.categoryName
+              }}</span>
+              <a (click)="nav(cate._id)">
+                <h3 class="product__title">{{ cate.title }}</h3>
+              </a>
+              <app-star-rating
+                [rating]="cate.rating"
+                [readonly]="true"
+              ></app-star-rating>
+              <div class="product__price flex">
+                <span class="new__price"
+                  ><i class="bi bi-currency-rupee"></i>{{ cate.amount }}</span
+                >
+                <span class="old__price"
+                  ><i class="bi bi-currency-rupee"></i>{{ cate.price }}</span
+                >
+                <a
+                  (click)="nav(cate._id)"
+                  class="action__btn cart__btn"
+                  aria-label="Add To Cart"
+                >
+                  <i class="fa fa-shopping-cart"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <div class="swiper-button-prev">
+        <i class="fa-solid fa-circle-chevron-left"></i>
+      </div>
+      <div class="swiper-button-next">
+        <i class="fa-solid fa-circle-chevron-right"></i>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= Cta Section ======= -->
+  <section id="cta" class="cta">
+    <div class="container">
+      <div class="text-center">
+        <h3 class="section__title1" data-aos="fade-right">
+          <span>PERSONALIZE</span> YOUR SPACE
+        </h3>
+        <p data-aos="fade-right">
+          Whether it’s photo paper, photo frames, matting-free picture frames,
+          or photo canvas, OMGs the premier photo printing service, only uses
+          materials from carefully selected partners to ensure the greatest
+          quality. Our staff in our online photo lab handles each step, from
+          order to production, with the highest care
+        </p>
+        <section class="home" data-aos="fade-right">
+          <a (click)="navToShop()" class="btns">Shop Now</a>
+        </section>
+      </div>
+    </div>
+  </section>
+  <!-- End Cta Section -->
+
+  <section id="services" class="services new__arrivals container section1">
+    <h3 class="section__title1" data-aos="fade-right">
+      <span>Why</span> Replicagifts?
+    </h3>
+    <div class="container">
+      <div class="row">
+        <div
+          class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0"
+          data-aos="fade-up"
+        >
+          <div class="icon-box icon-box-pink">
+            <div class="icon">
+              <a (click)="navToShop()" class="product__images1">
+                <img
+                  src="../../assets/assets/img/noun-quality-1716012.svg"
+                  alt=""
+                  class="product__img1 default"
+                />
+              </a>
+            </div>
+            <h4 class="title"><a>Best Quality</a></h4>
+            <p class="description">
+              A high-quality image frame enhances and preserves the visual
+              appeal of your cherished memories or artwork. luxury of preserving
+              your memories with the finest quality image frame.
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0"
+          data-aos="fade-up"
+          data-aos-delay="100"
+        >
+          <div class="icon-box icon-box-cyan">
+            <div class="icon">
+              <a (click)="navToShop()" class="product__images1">
+                <img
+                  src="../../assets/assets/img/noun-price-427281.svg"
+                  alt=""
+                  class="product__img1 default"
+                />
+              </a>
+            </div>
+            <h4 class="title"><a>Best Price</a></h4>
+            <p class="description">
+              Whether adorning your home, office, or gifting to loved ones, our
+              affordable image frame delivers unbeatable value without
+              compromising on style or functionality.
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0"
+          data-aos="fade-up"
+          data-aos-delay="200"
+        >
+          <div class="icon-box icon-box-green">
+            <div class="icon">
+              <a (click)="navToShop()" class="product__images1">
+                <img
+                  src="../assets/assets/img/noun-customer-support-108460.svg"
+                  alt=""
+                  class="product__img1 default"
+                />
+                <!-- <img src="assets/img/product-2-2.jpg" alt="" class="product__img hover" /> -->
+              </a>
+            </div>
+            <h4 class="title"><a href="">Customer Support</a></h4>
+            <p class="description">
+              The primary goals of customer support include resolving customer
+              issues promptly and efficiently, providing accurate information
+              and guidance, and ensuring a positive customer experience.
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0"
+          data-aos="fade-up"
+          data-aos-delay="300"
+        >
+          <div class="icon-box icon-box-blue">
+            <div class="icon">
+              <a (click)="navToShop()" class="product__images1">
+                <img
+                  src="../../assets/assets/img/noun-order-6675087.svg"
+                  alt=""
+                  class="product__img1 default"
+                />
+              </a>
+            </div>
+            <h4 class="title"><a href="">Easy Order</a></h4>
+            <p class="description">
+              Your order is now complete, and you can sit back and relax while
+              we take care of the rest. Our dedicated team will process your
+              order promptly and ensure it reaches you in perfect condition.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="faq">
+    <div data-aos="fade-up">
+      <div class="section-header">
+        <h3 class="section__title1"><span>Frequently</span> Asked Questions</h3>
+      </div>
+      <div
+        class="row justify-content-center"
+        data-aos="fade-up"
+        data-aos-delay="200"
+      >
+        <div class="col-lg-10">
+          <div class="accordion accordion-flush" id="faqlist">
+            <div class="accordion-item">
+              <h3 class="accordion-header">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#faq-content-1"
+                >
+                  <i class="bi bi-question-circle question-icon"></i>
+                  What payment methods do you offer?
+                </button>
+              </h3>
+              <div
+                id="faq-content-1"
+                class="accordion-collapse collapse"
+                data-bs-parent="#faqlist"
+              >
+                <div class="accordion-body">
+                  We offer all modes of online payment such as credit card,
+                  debit card, net banking, phone pe, G pay, UPI, Paytm via
+                  Razorpay.
+                </div>
+              </div>
+            </div>
+            <!-- # Faq item-->
+
+            <div class="accordion-item">
+              <h3 class="accordion-header">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#faq-content-2"
+                >
+                  <i class="bi bi-question-circle question-icon"></i>
+                  Do I have gift wrap options?
+                </button>
+              </h3>
+              <div
+                id="faq-content-2"
+                class="accordion-collapse collapse"
+                data-bs-parent="#faqlist"
+              >
+                <div class="accordion-body">
+                  Yes. you have the option to get your order gift wrapped if you
+                  are buying it for someone else. There is a 50 rupees extra
+                  charge for gift wrapping.
+                </div>
+              </div>
+            </div>
+            <!-- # Faq item-->
+
+            <div class="accordion-item">
+              <h3 class="accordion-header">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#faq-content-3"
+                >
+                  <i class="bi bi-question-circle question-icon"></i>
+                  What file formats can I upload?
+                </button>
+              </h3>
+              <div
+                id="faq-content-3"
+                class="accordion-collapse collapse"
+                data-bs-parent="#faqlist"
+              >
+                <div class="accordion-body">
+                  You can upload your images in jpeg, jpg, or png formats. Make
+                  sure they are of high resolution as the prints might get
+                  blurred with low-quality pictures.
+                </div>
+              </div>
+            </div>
+            <!-- # Faq item-->
+
+            <div class="accordion-item">
+              <h3 class="accordion-header">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#faq-content-4"
+                >
+                  <i class="bi bi-question-circle question-icon"></i>
+                  How much does delivery cost?
+                </button>
+              </h3>
+              <div
+                id="faq-content-4"
+                class="accordion-collapse collapse"
+                data-bs-parent="#faqlist"
+              >
+                <div class="accordion-body">
+                  <i class="bi bi-question-circle question-icon"></i>
+                  There is no minimum amount required to avail of free shipping
+                  on your order. We offer free shipping on all orders made
+                  through our website.
+                </div>
+              </div>
+            </div>
+            <!-- # Faq item-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End Frequently Asked Questions Section -->
+
+  <section id="contact" class="contact section-bg">
+    <h3 class="section__title1" data-aos="fade-right">
+      <span>Contact</span> Us
+    </h3>
+    <div class="container" data-aos="fade-up">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="info-box">
+                <a
+                  href="https://www.google.com/maps/place/115,+Big+St,+Mainckam+Colony,+Pattukkottai,+Tamil+Nadu+614601/data=!4m2!3m1!1s0x3b000096ad30d5cb:0x3127d169f9ab264d?sa=X&ved=1t:242&ictx=111"
+                  class="location-link"
+                >
+                  <i class="fas fa-map-marker-alt"></i>
+                  <!-- Font Awesome location icon -->
+                </a>
+                <h3>Our Address</h3>
+                <p>
+                  115, Big street, Pattukottai, Thanjavur, TamilNadu, 614601
+                </p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="info-box mt-4">
+                <a href="mailto:replicagifts567@gmail.com" class="email-link">
+                  <i class="fa fa-envelope" aria-hidden="true"></i>
+                </a>
+
+                <h3>Email Us</h3>
+                <p>replicagifts567&#64;gmail.com<br />contact&#64;gmail.com</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="info-box mt-4">
+                <a href="tel:+123456789" class="call-link">
+                  <i class="fa fa-phone" aria-hidden="true"></i>
+                </a>
+                <h3>Call Us</h3>
+                <p>+91 5589 55488 55<br />(+91) 91 444 93444</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 mt-4 mt-md-0">
+          <form
+            action="forms/contact.php"
+            method="post"
+            role="form"
+            class="php-email-form"
+          >
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <input
+                  type="text"
+                  name="name"
+                  class="form-control"
+                  id="name"
+                  placeholder="Your Name"
+                  required
+                  [(ngModel)]="contact.name"
+                  (input)="check()"
+                />
+              </div>
+              <div class="col-md-6 form-group mt-3 mt-md-0">
+                <input
+                  type="email"
+                  class="form-control"
+                  name="email"
+                  id="email"
+                  placeholder="Your Email"
+                  required
+                  [(ngModel)]="contact.email"
+                  (input)="check()"
+                />
+              </div>
+              <div class="col-md-6 form-group mt-3 mt-md-0">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="email"
+                  (keypress)="validateNumber($event)"
+                  id="email"
+                  placeholder="Your Phone"
+                  required
+                  [(ngModel)]="contact.phone"
+                  (input)="check()"
+                />
+              </div>
+            </div>
+            <div class="form-group mt1">
+              <input
+                type="text"
+                class="form-control"
+                name="subject"
+                id="subject"
+                placeholder="Subject"
+                required
+                [(ngModel)]="contact.subject"
+                (input)="check()"
+              />
+            </div>
+            <div class="form-group mt-3">
+              <textarea
+                class="form-control"
+                name="message"
+                rows="3"
+                placeholder="Message"
+                required
+                [(ngModel)]="contact.message"
+                (input)="check()"
+              ></textarea>
+            </div>
+            <!-- <div class="my-3">
+              <div class="loading">Loading</div>
+              <div class="error-message"></div>
+              <div class="sent-message">Your message has been sent. Thank you!</div>
+            </div> -->
+            <p class="text-danger">{{ err }}</p>
+            <div class="text-center">
+              <a (click)="contactAdmin()" class="btns">Submit</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End Contact Section -->
+</main>
+
+<script src="../../assets/assets/js/main.js"></script>

@@ -1,0 +1,55 @@
+.table > :not(:last-child) > :last-child > * {
+  border-bottom: 1px solid rgb(184, 184, 184);
+}
+
+/* .quantity-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.quantity {
+    background-color: #ffffff;
+    width: 80px;
+    padding: 8px;
+    border-radius: 0.25rem;
+    border: 1px solid #ced4da;
+}
+
+.quantity-buttons {
+    display: flex;
+    flex-direction: column;
+}
+
+.quantity-button {
+    background-color: #000000;
+    border: 1px solid #ced4da;
+    border-radius: 0;
+    cursor: pointer;
+    padding: 6px;
+}
+
+.quantity-button:hover {
+    background-color: #e6e6e6;
+}
+
+.increment {
+    border-top-right-radius: 0.25rem;
+}
+
+.decrement {
+    border-top-left-radius: 0.25rem;
+    border-top: none;
+} */
+
+.tabName {
+  padding-right: 20px;
+  color: black;
+}
+
+.quantity {
+  padding-block: 0.2rem;
+}
+
+.img {
+  width: 15rem;
+}

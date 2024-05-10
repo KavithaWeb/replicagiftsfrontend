@@ -1,0 +1,45 @@
+.btns3 {
+  align-items: center;
+  justify-content: center;
+    padding: 8px 16px;
+    border: 1px solid #d1d0d0;
+    border-radius: 50px;
+    background-color: transparent;
+    color: #3e3e3e;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    margin: 5px;
+    text-decoration: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  }
+
+  .btns3:hover {
+    background-color: #ff6200;
+    color: #ffffff;
+  }
+
+  .btns3.active {
+    background-color: #ff6200;
+    color: #ffffff !important;
+    border-color: #d1d0d0;
+  } 
+
+
+  @media screen and (max-width: 1380px){
+  .nav__list {
+      order: 1;
+      flex-direction: row;
+      align-items: flex-start;
+      row-gap: 1.5rem;
+  }
+}
+
+
+@media screen and (max-width: 750px){
+  .nav__list {
+      order: 1;
+      flex-direction: column;
+      align-items: flex-start;
+      row-gap: 1.5rem;
+  }
+}
