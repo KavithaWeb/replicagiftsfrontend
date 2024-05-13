@@ -296,34 +296,47 @@ export class ShopeComponent implements OnDestroy {
   }
 
   addWish(id: any) {
-    if (this.isAuth)
-      this.subscribetion.push(this.wish.addWish(id._id).subscribe((wish: any) => { console.log(wish); this.wish.checkWish(); this.getWish() }));
-    else {
 
-      this.guest.addToWish(id)
-      this.wish.noOfWish.next(this.guest.getWish().length)
-      this.getWish()
+    if (this.isAuth) {
+      this.wish.addWish(id._id).subscribe((wish: any) => {
+        console.log(wish); this.wish.checkWish(); this.getWish();
+
+        this.likeMessage(id._id);
+
+      });
     }
 
-    if (id.like) {
+    else {
+      this.guest.addToWish(id)
+      this.wish.noOfWish.next(this.guest.getWish().length);
+      this.getWish();
+      this.likeMessage(id._id);
+    }
+
+
+  }
+
+  likeMessage(id: any) {
+    if (this.wishlist.includes(id._id)) {
       Swal.fire({
         position: "center",
         icon: "success",
         title: "Item Added to Wishlist",
         showConfirmButton: false,
-        timer: 1000
+        timer: 500
       });
-    } else {
+    }
+    else {
       Swal.fire({
         position: "center",
         icon: "success",
         title: "Item Removed from Wishlist",
         showConfirmButton: false,
-        timer: 1000
+        timer: 500
       });
     }
-
   }
+
 
 
 

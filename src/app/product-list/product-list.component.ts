@@ -11,6 +11,7 @@ import { UserAuthService } from '../service/user-auth.service';
 import { GuestService } from '../service/guest.service';
 import Swal from 'sweetalert2';
 import '../../../node_modules/aos/dist/aos.css'
+import { wordBreak } from 'html2canvas/dist/types/css/property-descriptors/word-break';
 
 declare global {
   interface Window {
@@ -91,19 +92,27 @@ export class ProductListComponent {
   }
 
   addWish(id: any) {
-    id.like = !id.like;
 
     if (this.isAuth) {
-      this.wish.addWish(id._id).subscribe((wish: any) => { console.log(wish); this.wish.checkWish(); this.get() });
+      this.wish.addWish(id._id).subscribe((wish: any) => {
+        console.log(wish); this.wish.checkWish(); this.get();
+        this.likeMessage(id._id);
+
+      });
     }
 
     else {
       this.guest.addToWish(id)
       this.wish.noOfWish.next(this.guest.getWish().length);
-      this.get()
+      this.get();
+      this.likeMessage(id._id);
     }
 
-    if (id.like) {
+
+  }
+
+  likeMessage(id: any) {
+    if (this.wishList.includes(id._id)) {
       Swal.fire({
         position: "center",
         icon: "success",
